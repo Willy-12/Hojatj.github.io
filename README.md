@@ -19,22 +19,8 @@
 
 ## 🎯 Acerca del Proyecto
 
-Este proyecto contiene la interfaz web y la plantilla interactiva para la emisión de **Órdenes de Servicio Técnico** de **TJ Informática**. Permite registrar de forma rápida los datos del cliente, especificaciones técnicas completas del equipo (procesador, memoria RAM, almacenamiento, tarjeta gráfica), problemas reportados, trabajos realizados y condiciones de garantía, todo listo para imprimirse o exportarse en un formato limpio de una sola hoja A4.
+Este proyecto contiene la interfaz web y la plantilla interactiva para la emisión de **Órdenes de Servicio todo listo para imprimirse o exportarse en un formato limpio de una sola hoja A4.
 
----
-
-## ✨ Características Principales
-
-- **Diseño Optimizado para A4:** Estructura milimétricamente ajustada para que quepa perfectamente en una sola página al imprimir o exportar.
-- **Formulario Interactivo:** Campos editables para ingresar datos de clientes, características de hardware y observaciones del taller.
-- **Exportación a PDF:** Integración con herramientas de conversión para generar archivos PDF listos para enviar al cliente por WhatsApp o correo.
-- **Secciones Detalladas:**
-  - Datos de contacto y logotipo de la empresa.
-  - Registro detallado de componentes (Hardware, Software, Periféricos).
-  - Checkboxes y opciones rápidas para diagnósticos y mantenimientos.
-  - Cláusulas de garantía y espacio para firmas de conformidad.
-
----
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -74,15 +60,7 @@ No se requiere un servidor complejo ni instalación de dependencias de Node.js p
 2. Haz clic en el botón superior **"📄 Exportar PDF"**.
 3. Se generará automáticamente el archivo `Orden_Servicio_TJInformatica.pdf` listo para ser guardado o impreso.
 
----
 
-## 📞 Contacto y Soporte
-
-- **📞 Teléfono / WhatsApp:** +54 388 539-0558
-- **✉️ Correo Electrónico:** tj.torrez@outlook.com
-- **🌐 Sitio Web:** [tjinformatica.site](http://tjinformatica.site)
-
----
 
 ## 📄 Licencia
 
