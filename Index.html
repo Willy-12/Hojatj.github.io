@@ -1,0 +1,440 @@
+<!-- 
+    ORDEN DE SERVICIO TÉCNICO - TJ INFORMÁTICA
+    ✅ Al exportar a PDF: PREGUNTA DÓNDE GUARDARLO
+    Datos correctos + Logo configurado + Todo en una hoja A4
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERVICIO TÉCNICO - TJ INFORMÁTICA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primario: #0F3460;
+            --gris-oscuro: #2C3E50;
+            --gris-claro: #ECF0F1;
+            --borde: #CBD5E1;
+            --blanco: #FFFFFF;
+            --fuente-base: 11px;
+            --fuente-chica: 10px;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        body {
+            background: var(--gris-claro);
+            padding: 6px;
+            line-height: 1.3;
+            color: var(--gris-oscuro);
+            font-size: var(--fuente-base);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Botones */
+        .btn-bar {
+            position: sticky;
+            top: 3px;
+            z-index: 10;
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        button {
+            flex: 1;
+            padding: 6px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-pdf {
+            background: linear-gradient(135deg, var(--primario), #1A5F7A);
+            color: var(--blanco);
+        }
+        .btn-pdf:hover { transform: translateY(-1px); }
+        .btn-limpiar {
+            background: var(--blanco);
+            color: var(--gris-oscuro);
+            border: 1px solid var(--borde);
+        }
+
+        /* Hoja */
+        #hoja {
+            background: var(--blanco);
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--borde);
+            width: 100%;
+        }
+
+        /* Título principal */
+        .titulo-principal {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primario);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--primario);
+        }
+
+        /* Cabecera: Datos izquierda / Logo derecha */
+        .cuadro-cabecera {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            width: 100%;
+            border: 2px solid var(--primario);
+            border-radius: 4px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            min-height: 100px;
+            background: rgba(15, 52, 96, 0.02);
+        }
+        .mitad-datos {
+            width: 50%;
+            padding: 12px 15px;
+            border-right: 2px solid var(--primario);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+        .mitad-datos strong {
+            color: var(--primario);
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .mitad-datos span {
+            font-size: 13px;
+            color: var(--gris-oscuro);
+        }
+        .mitad-logo {
+            width: 50%;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blanco);
+        }
+        .mitad-logo img {
+            max-height: 125px;
+            max-width: 135%;
+            object-fit: contain;
+        }
+
+        /* Tablas compactas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 6px;
+            font-size: var(--fuente-chica);
+            border: 1px solid var(--borde);
+            table-layout: fixed;
+        }
+        th, td {
+            padding: 4px 6px;
+            vertical-align: middle;
+            border: 1px solid var(--borde);
+            word-wrap: break-word;
+        }
+        th {
+            background: linear-gradient(to bottom, var(--gris-claro), #E2E8F0);
+            color: var(--primario);
+            font-weight: 600;
+            text-align: left;
+            font-size: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: var(--fuente-chica);
+            background: transparent;
+            padding: 1px 2px;
+        }
+        textarea {
+            resize: none;
+            min-height: 20px;
+            line-height: 1.3;
+        }
+
+        /* OPCIONES EN LÍNEA — TEXTO AL LADO, NO ABAJO */
+        .opcion-linea {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-right: 8px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        /* Garantía compacta */
+        .garantia {
+            border: 1px solid var(--primario);
+            padding: 6px 10px;
+            margin: 8px 0;
+            font-size: 9.5px;
+            line-height: 1.4;
+            background: linear-gradient(135deg, rgba(15, 52, 96, 0.03), rgba(26, 95, 122, 0.03));
+            border-radius: 4px;
+            width: 100%;
+        }
+        .titulo-garantia {
+            font-size: 10.5px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            display: block;
+            color: var(--primario);
+        }
+
+        /* Firmas */
+        .firmas {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--borde);
+            width: 100%;
+            font-size: 10.5px;
+        }
+        .firma-col { width: 45%; text-align: center; }
+        .firma-line { border-bottom: 1px solid #000; margin: 12px 0 4px; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .cuadro-cabecera { flex-direction: row; flex-wrap: nowrap; }
+            .mitad-datos, .mitad-logo { width: 50%; }
+            .mitad-datos { border-right: 2px solid var(--primario); border-bottom: none; }
+            .titulo-principal { font-size: 18px; }
+            #hoja { padding: 10px; }
+            .firmas { flex-direction: column; gap: 12px; }
+            .firma-col { width: 100%; }
+        }
+
+        /* Impresión/PDF — AJUSTADO PARA UNA SOLA HOJA A4 */
+        @media print {
+            body { background: var(--blanco); padding: 0; font-size: 9.5px; line-height: 1.25; }
+            .btn-bar { display: none; }
+            #hoja { box-shadow: none; border: none; padding: 0; }
+            .garantia { background: transparent; border: 1px solid #000; }
+            th { background: transparent; }
+            table { margin-bottom: 4px; }
+            td, th { padding: 3px 5px; }
+            .cuadro-cabecera { min-height: 90px; }
+            #hoja { page-break-after: avoid; }
+            table { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn-bar">
+            <button class="btn-pdf" onclick="exportarPDF()">📄 Exportar PDF</button>
+            <button class="btn-limpiar" onclick="limpiar()">🗑️ Limpiar</button>
+        </div>
+
+        <div id="hoja">
+            <h1 class="titulo-principal">SERVICIO TÉCNICO</h1>
+
+           <div class="cuadro-cabecera">
+    <div class="mitad-datos">
+        <div class="item-dato"><strong>               TJ INFORMATICA            </strong> <span> </span></div>
+        <div class="item-dato"><strong> </strong> <span> </span></div>
+        <div class="item-dato"><strong>📞 Teléfono:</strong> <span>+54 388 539-0558</span></div>
+        <div class="item-dato"><strong>💬 WhatsApp:</strong> <span>+54 9 388 539-0558</span></div>
+        <div class="item-dato"><strong>✉️ Correo:</strong> <span>tj.torrez@outlook.com</span></div>
+        <div class="item-dato"><strong>🌐 Web:</strong> <span>http://tjinformatica.site</span></div>
+    </div>
+    <div class="mitad-logo">
+        <img src="logo.png" alt="TJ INFORMÁTICA">
+    </div>
+</div>
+            <!-- DATOS DEL CLIENTE -->
+            <table>
+                <tr>
+                    <th style="width: 22%;">NOMBRE DEL CLIENTE</th>
+                    <td colspan="3"><input type="text" placeholder="Nombre / Razón Social"></td>
+                </tr>
+                <tr>
+                    <th>DIRECCIÓN</th>
+                    <td><input type="text" placeholder="Domicilio"></td>
+                    <th style="width: 12%;">TELÉFONO</th>
+                    <td><input type="text" placeholder="Número"></td>
+                </tr>
+            </table>
+
+            <!-- DATOS DEL EQUIPO -->
+            <table>
+                <tr><th colspan="4">DATOS DEL EQUIPO</th></tr>
+                <tr>
+                    <th>MODELO</th>
+                    <td colspan="3">
+                        <label class="opcion-linea"><input type="radio" name="equipo"> Escritorio</label>
+                        <label class="opcion-linea"><input type="radio" name="equipo"> Portátil</label>
+                        <label class="opcion-linea"><input type="radio" name="equipo"> All in One</label>
+                        Vel.: <input type="text" style="width: 50px;" placeholder="GHz">
+                    </td>
+                </tr>
+                <tr>
+                    <th>PROCESADOR</th>
+                    <td>Marca: <input type="text" style="width: 70px;"></td>
+                    <td>CPU: <input type="text" style="width: 70px;"></td>
+                    <th>Núcleos: <input type="text" style="width: 30px;"></th>
+                </tr>
+                <tr>
+                    <th>PLACA BASE</th>
+                    <td>Marca: <input type="text" style="width: 70px;"></td>
+                    <td>Modelo: <input type="text" style="width: 70px;"></td>
+                    <td>Cap.: <input type="text" style="width: 60px;"></td>
+                </tr>
+                <tr>
+                    <th>ALMACENAMIENTO</th>
+                    <td>Marca: <input type="text" style="width: 70px;"></td>
+                    <td>Cap.: <input type="text" style="width: 60px;"></td>
+                    <td>
+                        <label class="opcion-linea"><input type="radio" name="almacen"> SSD</label>
+                        <label class="opcion-linea"><input type="radio" name="almacen"> HDD</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>MEMORIA RAM</th>
+                    <td>Marca: <input type="text" style="width: 70px;"></td>
+                    <td>Cap.: <input type="text" style="width: 60px;"></td>
+                    <td>Tipo: DDR3/4/5</td>
+                </tr>
+                <tr>
+                    <th>T. VIDEO</th>
+                    <td colspan="3">Marca: <input type="text" style="width: 80px;"> Modelo: <input type="text" style="width: 80px;"> Mem: <input type="text" style="width: 40px;"></td>
+                </tr>
+                <tr>
+                    <th>ACCESORIOS</th>
+                    <td colspan="3">
+                        <label class="opcion-linea"><input type="checkbox"> Teclado</label>
+                        <label class="opcion-linea"><input type="checkbox"> Mouse</label>
+                        <label class="opcion-linea"><input type="checkbox"> Cargador/Fuente</label>
+                        <label class="opcion-linea"><input type="checkbox"> Monitor</label>
+                        Otros: <input type="text" style="width: 80px;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>SIST. OPERATIVO</th>
+                    <td colspan="3">
+                        <label class="opcion-linea"><input type="radio" name="so"> W7</label>
+                        <label class="opcion-linea"><input type="radio" name="so"> W10</label>
+                        <label class="opcion-linea"><input type="radio" name="so"> W11</label>
+                        <label class="opcion-linea"><input type="radio" name="so"> Linux</label>
+                        Otro: <input type="text" style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>PARTICIONES</th>
+                    <td>
+                        <label class="opcion-linea"><input type="radio" name="part"> Sí</label>
+                        <label class="opcion-linea"><input type="radio" name="part"> No</label>
+                    </td>
+                    <th>ESTADO FÍSICO</th>
+                    <td><input type="text" placeholder="Bueno/Regular/Malo"></td>
+                </tr>
+            </table>
+
+            <!-- PROBLEMA DEL CLIENTE -->
+            <table>
+                <tr><th>PROBLEMA REPORTADO POR EL CLIENTE</th></tr>
+                <tr><td style="height: 40px;"><textarea placeholder="Descripción..."></textarea></td></tr>
+            </table>
+
+            <!-- TRABAJOS REALIZADOS -->
+            <table>
+                <tr><th colspan="4">TRABAJOS REALIZADOS</th></tr>
+                <tr>
+                    <th style="width: 25%;">HARDWARE</th>
+                    <td style="width: 25%;">
+                        <label class="opcion-linea"><input type="checkbox"> Diagnóstico</label>
+                        <label class="opcion-linea"><input type="checkbox"> Limpieza</label>
+                        <label class="opcion-linea"><input type="checkbox"> P. térmica</label>
+                        <label class="opcion-linea"><input type="checkbox"> Cambio piezas</label>
+                        Otros: <input type="text" style="width: 60px;">
+                    </td>
+                    <th style="width: 25%;">SOFTWARE</th>
+                    <td style="width: 25%;">
+                        <label class="opcion-linea"><input type="checkbox"> Instalar S.O.</label>
+                        <label class="opcion-linea"><input type="checkbox"> Formateo</label>
+                        <label class="opcion-linea"><input type="checkbox"> Drivers</label>
+                        <label class="opcion-linea"><input type="checkbox"> Eliminar virus</label>
+                        Otros: <input type="text" style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4">DETALLES:<br><textarea style="height: 100px;" placeholder="Comentarios..."></textarea></th>
+                </tr>
+            </table>
+
+            <!-- TIPO DE SERVICIO -->
+            <table>
+                <tr>
+                    <th style="width: 25%;">TIPO DE SERVICIO</th>
+                    <td>
+                        <label class="opcion-linea"><input type="radio" name="servicio"> MANTENIMIENTO</label>
+                        <label class="opcion-linea"><input type="radio" name="servicio"> REPARACIÓN</label>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- FIRMAS -->
+            <div class="firmas">
+                <div class="firma-col">
+                    <div class="firma-line"></div>
+                    <div> </div>
+                    <div> </div>
+                    <div>Firma y aclaración — Técnico</div>
+                </div>
+                <div class="firma-col">
+                    <div class="firma-line"></div>
+                    <div>                              </div>
+                    <div>                              </div>
+                    <div>Firma y aclaración — Cliente</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function exportarPDF() {
+            const elemento = document.getElementById('hoja');
+            html2pdf()
+                .set({
+                    margin: 8,
+                    filename: 'Orden_Servicio_TJInformatica.pdf',
+                    image: { type: 'jpeg', quality: 0.95 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    saveAs: true // ✅ HABILITA EL DIÁLOGO "GUARDAR COMO" — PREGUNTA DÓNDE GUARDAR
+                })
+                .from(elemento)
+                .save();
+        }
+        function limpiar() {
+            if (confirm('¿Limpiar todos los campos?')) location.reload();
+        }
+    </script>
+</body>
+</html>
